@@ -1,0 +1,29 @@
+ ---1. Creación de la tabla Clientes
+CREATE TABLE clientes (
+    id_clientes INT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL
+);
+
+-- 2. Creación de la tabla Productos
+CREATE TABLE productos (
+    id_productos INT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    precio DECIMAL(10, 2) NOT NULL CHECK (precio >= 0),
+    stock INT NOT NULL CHECK (stock >= 0)
+);
+
+-- 3. Creación de la tabla Compras (Relación muchos a muchos)
+CREATE TABLE compras (
+    id_compras INT PRIMARY KEY,
+    id_clientes INT NOT NULL,
+    id_productos INT NOT NULL,
+    total DECIMAL(10, 2) NOT NULL CHECK (total >= 0),
+    fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Definición de llaves foráneas
+    CONSTRAINT fk_compra_cliente FOREIGN KEY (id_clientes) 
+        REFERENCES clientes(id_clientes) ON DELETE CASCADE,
+    CONSTRAINT fk_compra_producto FOREIGN KEY (id_productos) 
+        REFERENCES productos(id_productos) ON DELETE CASCADE
+);  
